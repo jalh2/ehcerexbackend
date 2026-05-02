@@ -1,3 +1,4 @@
 node_modules/
 .env
 ehcerex-service-account.json
+config.js

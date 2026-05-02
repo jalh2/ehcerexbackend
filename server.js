@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const session = require('express-session')
+const FirestoreStore = require('firestore-store')(session)
 const { db } = require('./config')
 const { notFound, errorHandler } = require('./middleware/errorMiddleware')
 
@@ -30,6 +31,10 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }))
 
 const sessionSecret = process.env.SESSION_SECRET || 'default_secret'
 app.use(session({
+  store: new FirestoreStore({
+    database: db,
+    collection: 'sessions'
+  }),
   secret: sessionSecret,
   resave: false,
   saveUninitialized: false,
